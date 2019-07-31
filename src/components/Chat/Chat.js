@@ -1,4 +1,6 @@
 import React from 'react';
+import Message from '../Message';
+import './Chat.css';
 
 class Chat extends React.Component {
     constructor(props) {
@@ -18,8 +20,10 @@ class Chat extends React.Component {
     sendMessageOnEnter(event) {
 
         if (event.key === 'Enter') {
+            this.setState((prevState) => {
+                prevState.messages.push({text: this.state.messageInput})
+            });
             this.setState({
-                messages: [...this.state.messages, {text: this.state.messageInput}],
                 messageInput: ''
             });
         }
@@ -28,6 +32,13 @@ class Chat extends React.Component {
     render() {
         return(
             <div className="chat">
+                <div className="message-list">
+                    <div className="messages">
+                        {this.state.messages.map((value, index) => {
+                            return <Message key={index} text={value.text}/>
+                        })}
+                    </div>
+                </div>
                 <input
                     type="text"
                     className="input-message"
