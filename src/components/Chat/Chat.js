@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Message from '../Message';
 import './Chat.css';
 
-class Chat extends React.Component {
+class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,21 +20,20 @@ class Chat extends React.Component {
     sendMessageOnEnter(event) {
 
         if (event.key === 'Enter') {
-            this.setState((prevState) => {
-                prevState.messages.push({text: this.state.messageInput})
-            });
-            this.setState({
+            this.setState(prevState => ({
+                messages: [...prevState.messages, {text: prevState.messageInput }],
                 messageInput: ''
-            });
+            }));
         }
     }
 
     render() {
+        const { messages, messageInput } = this.state;
         return(
             <div className="chat">
                 <div className="message-list">
                     <div className="messages">
-                        {this.state.messages.map((value, index) => {
+                        {messages.map((value, index) => {
                             return <Message key={index} text={value.text}/>
                         })}
                     </div>
@@ -42,7 +41,7 @@ class Chat extends React.Component {
                 <input
                     type="text"
                     className="input-message"
-                    value={this.state.messageInput}
+                    value={messageInput}
                     onChange={this.changeInputMessage}
                     onKeyPress={this.sendMessageOnEnter}
                 />
